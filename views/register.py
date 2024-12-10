@@ -13,7 +13,7 @@ def register_view(page: ft.Page):
         session.add(user)
         session.commit()
         session.close()
-        page.go("/login")
+        page.go("/")
 
     username_field = ft.TextField(label="Username")
     password_field = ft.TextField(label="Password", password=True)
