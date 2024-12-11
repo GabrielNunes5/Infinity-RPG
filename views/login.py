@@ -29,21 +29,36 @@ def login_view(page: ft.Page):
         label="Password", password=True, can_reveal_password=True, width=300)
     login_button = ft.ElevatedButton(text="Login", on_click=authenticate_user)
     register_button = ft.ElevatedButton(
-        text="Cadastrar", on_click=lambda _: page.go("/register")
-    )
+        text="Cadastrar", on_click=lambda _: page.go("/register"))
 
-    return ft.View(
+    login_page = ft.View(
         "/",
         [
-            ft.Column(
+            ft.Row(
                 controls=[
-                    username_field,
-                    password_field,
-                    login_button,
-                    register_button
+                    ft.Container(
+                        bgcolor="#212121",
+                        width=420,
+                        height=400,
+                        border_radius=35,
+                        padding=20,
+                        content=ft.Column(
+                            controls=[
+                                username_field,
+                                password_field,
+                                login_button,
+                                register_button
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        ),
+                    )
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
             )
         ],
     )
+
+    return login_page
