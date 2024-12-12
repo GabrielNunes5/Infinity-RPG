@@ -8,14 +8,20 @@ from config import hash_password
 def register_view(page: ft.Page):
     def register_user(e):
         session = SessionLocal()
+        name = name_field.value
         username = username_field.value
+        email = email_field.value
         password = hash_password(password_field.value)
-        user = User(username=username, password=password)
+        user = User(name=name, username=username,
+                    email=email, password=password)
         session.add(user)
         session.commit()
         session.close()
         page.go("/")
 
+    name_field = ft.TextField(
+        **input_configs,
+        label="Nome e Sobrenome")
     username_field = ft.TextField(
         **input_configs,
         label="Usuário")
@@ -35,6 +41,7 @@ def register_view(page: ft.Page):
     login_redirect_text = ft.TextButton(
         "Já possui conta? Entre agora",
         on_click=lambda _: page.go("/"))
+
     register_page = ft.View(
         "/register",
         [
@@ -57,6 +64,7 @@ def register_view(page: ft.Page):
                                         size=20,
                                         color='#ffffff',
                                         ),
+                                name_field,
                                 username_field,
                                 email_field,
                                 password_field,
