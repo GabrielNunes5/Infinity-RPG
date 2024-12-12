@@ -1,9 +1,11 @@
 import flet as ft
+from config import input_configs, btn_configs
 from models.database import SessionLocal
 from models.user import User
 from bcrypt import checkpw
 
-user_session = {"user_id": None}  # Armazena o ID do usuário logado
+# Armazena o ID do usuário logado
+user_session = {"user_id": None}
 
 
 def login_view(page: ft.Page):
@@ -24,12 +26,23 @@ def login_view(page: ft.Page):
             snack_bar.open = True
             page.update()
 
-    username_field = ft.TextField(label="Username", width=300)
+    username_field = ft.TextField(
+        **input_configs,
+        label="Usuário",
+        icon=ft.Icons.PERSON_ROUNDED)
     password_field = ft.TextField(
-        label="Password", password=True, can_reveal_password=True, width=300)
-    login_button = ft.ElevatedButton(text="Login", on_click=authenticate_user)
-    register_button = ft.ElevatedButton(
-        text="Cadastrar", on_click=lambda _: page.go("/register"))
+        **input_configs,
+        label="Senha",
+        password=True,
+        icon=ft.Icons.KEY,
+        can_reveal_password=True)
+    login_button = ft.ElevatedButton(
+        **btn_configs,
+        text="Entrar",
+        on_click=authenticate_user)
+    register_redirect_text = ft.TextButton(
+        "Não possui conta? Cadastre-se agora",
+        on_click=lambda _: page.go("/register"))
 
     login_page = ft.View(
         "/",
@@ -38,16 +51,30 @@ def login_view(page: ft.Page):
                 controls=[
                     ft.Container(
                         bgcolor="#212121",
-                        width=420,
-                        height=400,
+                        width=400,
+                        height=450,
                         border_radius=35,
                         padding=20,
                         content=ft.Column(
                             controls=[
+                                ft.Text(value='INFINITY RPG - LOGIN',
+                                        size=30,
+                                        weight="bold",
+                                        color="#ffffff",
+                                        ),
+                                ft.Image(
+                                    src='assets/d20.png',
+                                    width=80,
+                                    color='#ffffff'
+                                ),
+                                ft.Text(value='Entre e divirta-se',
+                                        size=20,
+                                        color='#ffffff',
+                                        ),
                                 username_field,
                                 password_field,
                                 login_button,
-                                register_button
+                                register_redirect_text
                             ],
                             alignment=ft.MainAxisAlignment.CENTER,
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,

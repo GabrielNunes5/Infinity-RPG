@@ -1,16 +1,17 @@
-# input_configs = {
-#     'border': "underline",
-#     'width': 320,
-#     'text_size': 14,
-# }
-# btn_configs = {
-#     'bgcolor': '#000000',
-#     'color': '#FFFFFF',
-#     'width': 130,
-#     'height': 20
-# }
-
 from bcrypt import hashpw, gensalt, checkpw
+
+# Definições gerais
+input_configs = {
+    'border': "underline",
+    'width': 300,
+    'text_size': 15,
+}
+btn_configs = {
+    'bgcolor': '#000000',
+    'color': '#FFFFFF',
+    'width': 130,
+    'height': 35
+}
 
 
 def hash_password(password: str) -> str:

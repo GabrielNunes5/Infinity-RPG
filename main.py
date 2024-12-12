@@ -6,7 +6,8 @@ from views.character import character_view
 
 
 def main(page: ft.Page):
-    page.title = "Character Creator"
+    page.title = "INFINITY RPG"
+    page.theme_mode = ft.ThemeMode.DARK
 
     def route_change(route):
         page.views.clear()
@@ -24,4 +25,4 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     init_db()
-    ft.app(target=main)
+    ft.app(target=main, assets_dir='assets')
