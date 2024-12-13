@@ -1,8 +1,6 @@
 import flet as ft
 from config import input_configs, btn_configs
-from models.database import SessionLocal
-from models.user import User
-from bcrypt import checkpw
+from controllers.login_controller import LoginController
 
 # Armazena o ID do usuário logado
 user_session = {"user_id": None}
@@ -10,22 +8,23 @@ user_session = {"user_id": None}
 
 def login_view(page: ft.Page):
     def authenticate_user(e):
-        session = SessionLocal()
         username = username_field.value
         password = password_field.value
-        user = session.query(User).filter_by(username=username).first()
-        session.close()
 
-        if user and checkpw(password.encode(), user.password.encode()):
-            user_session["user_id"] = user.id
-            print(f"Usuário {user.username} logado com sucesso!")
+        # Use o controller para autenticação
+        result = LoginController.authenticate_user(username, password)
+
+        if result["status"]:
+            user_session["user_id"] = result["user_id"]
+            # print(f"Usuário {result['username']} logado com sucesso!")
             page.go("/characters")
         else:
-            snack_bar = ft.SnackBar(ft.Text("Credenciais inválidas!"))
+            snack_bar = ft.SnackBar(ft.Text(result["message"]))
             page.overlay.append(snack_bar)
             snack_bar.open = True
             page.update()
 
+    # Campos da interface
     username_field = ft.TextField(
         **input_configs,
         label="Usuário",
@@ -44,6 +43,7 @@ def login_view(page: ft.Page):
         "Não possui conta? Cadastre-se agora",
         on_click=lambda _: page.go("/register"))
 
+    # Página de login
     login_page = ft.View(
         "/",
         [

@@ -150,10 +150,6 @@ def register_view(page: ft.Page):
         "/register",
         [
             ft.Row(
-                controls=[instructions_button],
-                alignment=ft.MainAxisAlignment.END,
-            ),
-            ft.Row(
                 controls=[
                     ft.Container(
                         bgcolor="#212121",
@@ -168,10 +164,16 @@ def register_view(page: ft.Page):
                                         weight="bold",
                                         color="#ffffff",
                                         ),
-                                ft.Text(value='Cadastre-se e jogue agora',
-                                        size=20,
-                                        color='#ffffff',
-                                        ),
+                                ft.Row(
+                                    controls=[
+                                        ft.Text(
+                                            value='Cadastre-se e jogue agora',
+                                            size=20,
+                                            color='#ffffff'),
+                                        instructions_button],
+                                    alignment=ft.MainAxisAlignment.CENTER
+                                ),
+
                                 name_field,
                                 username_field,
                                 email_field,
