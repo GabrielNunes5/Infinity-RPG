@@ -6,7 +6,7 @@ from views.character import character_view
 
 
 def main(page: ft.Page):
-    page.title = "INFINITY RPG"
+    page.title = "Infinity RPG"
     page.theme_mode = ft.ThemeMode.DARK
 
     def route_change(route):

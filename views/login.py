@@ -34,7 +34,7 @@ def login_view(page: ft.Page):
         **input_configs,
         label="Senha",
         password=True,
-        icon=ft.Icons.KEY,
+        icon=ft.Icons.PASSWORD_OUTLINED,
         can_reveal_password=True)
     login_button = ft.ElevatedButton(
         **btn_configs,
