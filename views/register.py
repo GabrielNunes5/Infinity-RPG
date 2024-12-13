@@ -9,6 +9,7 @@ def register_view(page: ft.Page):
         username = username_field.value
         email = email_field.value
         password = password_field.value
+        confirm_password = confirm_password_field.value
 
         # Validações
         errors = UserController.validade_user_data(
@@ -17,6 +18,10 @@ def register_view(page: ft.Page):
             email,
             password
         )
+
+        if password != confirm_password:
+            errors.append("As senhas não coincidem.")
+
         if errors:
             for error in errors:
                 snack_bar = ft.SnackBar(ft.Text(error))
@@ -44,6 +49,30 @@ def register_view(page: ft.Page):
             page.update()
             page.go("/")
 
+    def validate_password(e):
+        """Validação em tempo real para a senha"""
+        password = password_field.value
+        if len(password) < 12:
+            password_feedback.value = (
+                "A senha deve ter pelo menos 12 caracteres.")
+            password_feedback.color = "red"
+        elif not any(c.isupper() for c in password):
+            password_feedback.value = (
+                "A senha deve conter pelo menos 1 letra maiúscula.")
+            password_feedback.color = "red"
+        elif not any(c.isdigit() for c in password):
+            password_feedback.value = (
+                "A senha deve conter pelo menos 1 número.")
+            password_feedback.color = "red"
+        elif not any(c in "!@#$%^&*()_+-=[]{}|;':,.<>?/" for c in password):
+            password_feedback.value = (
+                "A senha deve conter pelo menos 1 caractere especial.")
+            password_feedback.color = "red"
+        else:
+            password_feedback.value = "Senha forte!"
+            password_feedback.color = "green"
+        page.update()
+
     def show_instructions(e):
         instructions_dialog.open = True
         page.update()
@@ -68,7 +97,18 @@ def register_view(page: ft.Page):
         label="Senha",
         icon=ft.Icons.PASSWORD_OUTLINED,
         can_reveal_password=True,
-        password=True)
+        password=True,
+        on_change=validate_password
+    )
+    confirm_password_field = ft.TextField(
+        **input_configs,
+        label="Confirme sua senha",
+        icon=ft.Icons.PASSWORD_OUTLINED,
+        can_reveal_password=True,
+        password=True
+    )
+    password_feedback = ft.Text(value="", color="red")
+
     register_button = ft.ElevatedButton(
         "Cadastrar",
         **btn_configs,
@@ -118,7 +158,7 @@ def register_view(page: ft.Page):
                     ft.Container(
                         bgcolor="#212121",
                         width=450,
-                        height=500,
+                        height=550,
                         border_radius=35,
                         padding=20,
                         content=ft.Column(
@@ -136,6 +176,8 @@ def register_view(page: ft.Page):
                                 username_field,
                                 email_field,
                                 password_field,
+                                confirm_password_field,
+                                password_feedback,
                                 register_button,
                                 login_redirect_text
                             ],
