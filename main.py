@@ -3,6 +3,7 @@ from models.database import init_db
 from views.register import register_view
 from views.login import login_view
 from views.character import character_view
+from views.create_character import create_character_view
 
 
 def main(page: ft.Page):
@@ -17,6 +18,8 @@ def main(page: ft.Page):
             page.views.append(register_view(page))
         elif page.route == "/characters":
             page.views.append(character_view(page))
+        elif page.route == "/create_character":
+            page.views.append(create_character_view(page))
         page.update()
 
     page.on_route_change = route_change

@@ -13,6 +13,25 @@ btn_configs = {
     'height': 35
 }
 
+DND_RACES = [
+    "Humano",
+    "Elfo",
+    "Anão",
+    "Meio-Orc",
+    "Halfling",
+    "Tiefling",
+    "Gnomo",
+    "Dragonborn"
+]
+
+HAIR_AND_SKIN_COLORS = [
+    {"name": "Preto", "hex": "#000000"},
+    {"name": "Castanho", "hex": "#8B4513"},
+    {"name": "Loiro", "hex": "#FFD700"},
+    {"name": "Ruivo", "hex": "#FF4500"},
+    {"name": "Branco", "hex": "#FFFFFF"},
+]
+
 
 def hash_password(password: str) -> str:
     """Criptografa uma senha usando bcrypt."""
