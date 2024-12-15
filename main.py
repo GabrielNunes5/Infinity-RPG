@@ -9,6 +9,8 @@ from views.create_character import create_character_view
 def main(page: ft.Page):
     page.title = "Infinity RPG"
     page.theme_mode = ft.ThemeMode.DARK
+    page.window.maximized = True
+    page.window.minimizable = False
 
     def route_change(route):
         page.views.clear()

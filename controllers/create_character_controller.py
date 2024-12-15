@@ -3,9 +3,18 @@ class CreateCharacterController:
         self.page = page
         self.update_view = update_view
         self.classes = [
-            {"name": "Bárbaro", "image": "/images/barbaro.png"},
-            {"name": "Mago", "image": "/images/mago.png"},
-            {"name": "Ladino", "image": "/images/ladino.png"}
+            {"name": "Bárbaro", "image": "assets/barbaro.png"},
+            {"name": "Bardo", "image": "assets/bardo.png"},
+            {"name": "Bruxo", "image": "assets/bruxo.png"},
+            {"name": "Caçador", "image": "assets/caçador.png"},
+            {"name": "Druida", "image": "assets/druida.png"},
+            {"name": "Feiticeiro", "image": "assets/feiticeiro.png"},
+            {"name": "Guerreiro", "image": "assets/guerreiro.png"},
+            {"name": "Ladino", "image": "assets/ladino.png"},
+            {"name": "Mago", "image": "assets/mago.png"},
+            {"name": "Monge", "image": "assets/monge.png"},
+            {"name": "Paladino", "image": "assets/paladino.png"},
+            {"name": "Sacerdote", "image": "assets/sacerdote.png"},
         ]
         self.current_class_index = 0
 

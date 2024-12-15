@@ -15,7 +15,7 @@ def character_view(page: ft.Page):
         bgcolor="#000000",
         color="#FFFFFF",
         width=210,
-        height=20,
+        height=25,
         text="Criar Novo Personagem",
         on_click=lambda e: page.go("/create_character"),
     )

@@ -6,6 +6,10 @@ input_configs = {
     'width': 300,
     'text_size': 15,
 }
+atribute_configs = {
+    'width': 100,
+    'value': "8"
+}
 btn_configs = {
     'bgcolor': '#000000',
     'color': '#FFFFFF',

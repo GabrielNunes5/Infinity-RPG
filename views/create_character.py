@@ -1,7 +1,7 @@
 import flet as ft
 from controllers.create_character_controller import CreateCharacterController
 from config import HAIR_AND_SKIN_COLORS
-from config import DND_RACES
+from config import DND_RACES, atribute_configs
 
 
 def create_character_view(page: ft.Page):
@@ -20,7 +20,7 @@ def create_character_view(page: ft.Page):
     character_name_field = ft.TextField(label="Nome do Personagem", width=300)
 
     # Imagem e classe
-    class_image = ft.Image(src=controller.class_image, width=100, height=100)
+    class_image = ft.Image(src=controller.class_image, width=150, height=150)
     class_name_field = ft.Text(
         value=controller.class_name, size=18, color="#FFFFFF")
 
@@ -61,12 +61,12 @@ def create_character_view(page: ft.Page):
     skin_color_dropdown = generate_color_dropdown(
         HAIR_AND_SKIN_COLORS, "Cor da Pele")
 
-    # Validação dos atributos - usando on_blur
+    # Validação dos atributos
     def validate_input(e):
         try:
             value = int(e.control.value)
             if value < 8 or value > 20:
-                e.control.value = "8"  # Valor padrão
+                e.control.value = "8"
                 e.control.update()
         except ValueError:
             e.control.value = "8"
@@ -74,12 +74,25 @@ def create_character_view(page: ft.Page):
 
     # Campos de atributos
     attribute_fields = {
-        "Força": ft.TextField(label="Força", value="8", on_blur=validate_input, width=100),
-        "Constituição": ft.TextField(label="Constituição", value="8", on_blur=validate_input, width=100),
-        "Destreza": ft.TextField(label="Destreza", value="8", on_blur=validate_input, width=100),
-        "Inteligência": ft.TextField(label="Inteligência", value="8", on_blur=validate_input, width=100),
-        "Sabedoria": ft.TextField(label="Sabedoria", value="8", on_blur=validate_input, width=100),
-        "Carisma": ft.TextField(label="Carisma", value="8", on_blur=validate_input, width=100),
+        "Força": ft.TextField(label="Força",
+                              on_blur=validate_input,
+                              **atribute_configs),
+        "Constituição": ft.TextField(label="Constituição",
+                                     on_blur=validate_input,
+                                     **atribute_configs
+                                     ),
+        "Destreza": ft.TextField(label="Destreza",
+                                 on_blur=validate_input,
+                                 **atribute_configs),
+        "Inteligência": ft.TextField(label="Inteligência",
+                                     on_blur=validate_input,
+                                     **atribute_configs),
+        "Sabedoria": ft.TextField(label="Sabedoria",
+                                  on_blur=validate_input,
+                                  **atribute_configs),
+        "Carisma": ft.TextField(label="Carisma",
+                                on_blur=validate_input,
+                                **atribute_configs),
     }
 
     # Função para criar o personagem
@@ -105,7 +118,8 @@ def create_character_view(page: ft.Page):
             "race": race_dropdown.value,
             "hair_color": hair_color_dropdown.value,
             "skin_color": skin_color_dropdown.value,
-            "attributes": {k: int(v.value) for k, v in attribute_fields.items()}
+            "attributes": {k: int(
+                v.value) for k, v in attribute_fields.items()}
         }
         controller.save_character(character_data)
 
@@ -122,13 +136,18 @@ def create_character_view(page: ft.Page):
 
     # Botão para criar personagem
     create_character_button = ft.ElevatedButton(
-        text="Criar Personagem", on_click=create_character)
+        bgcolor="#000000",
+        color="#FFFFFF",
+        width=210,
+        height=25,
+        text="Criar Novo Personagem",
+        on_click=create_character)
 
     # Layout dentro do Container principal
     main_container = ft.Container(
         bgcolor="#212121",
-        width=850,
-        height=650,
+        width=800,
+        height=680,
         border_radius=35,
         padding=20,
         content=ft.Column(
