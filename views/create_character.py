@@ -5,9 +5,6 @@ from config import DND_RACES, atribute_configs
 
 
 def create_character_view(page: ft.Page):
-    # Declara como None inicialmente para evitar problemas de escopo
-    controller = None
-
     # Função de atualização da view
     def update_view():
         class_image.src = controller.class_image
@@ -115,6 +112,7 @@ def create_character_view(page: ft.Page):
         character_data = {
             "name": character_name_field.value,
             "class": controller.class_name,
+            "class_image": controller.class_image,
             "race": race_dropdown.value,
             "hair_color": hair_color_dropdown.value,
             "skin_color": skin_color_dropdown.value,
@@ -122,6 +120,7 @@ def create_character_view(page: ft.Page):
                 v.value) for k, v in attribute_fields.items()}
         }
         controller.save_character(character_data)
+        page.go('/characters')
 
     # Botões de navegação para trocar a imagem da classe
     navigation_buttons = ft.Row(

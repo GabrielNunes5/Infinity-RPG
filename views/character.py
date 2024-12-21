@@ -56,6 +56,8 @@ def character_view(page: ft.Page):
                             ft.Text(
                                 f"Nome: {char.name}", size=18, color="#ffffff"
                             ),
+                            ft.Image(src=char.class_image,
+                                     width=100, height=100),
                             ft.Text(
                                 f"Raça: {char.race}", size=16, color="#bbbbbb"
                             ),

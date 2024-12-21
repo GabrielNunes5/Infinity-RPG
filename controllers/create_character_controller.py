@@ -1,3 +1,8 @@
+from models.database import SessionLocal
+from models.character import Character
+from views.login import user_session
+
+
 class CreateCharacterController:
     def __init__(self, page, update_view):
         self.page = page
@@ -37,5 +42,32 @@ class CreateCharacterController:
         self.update_view()
 
     def save_character(self, character_data):
-        print("Personagem criado com sucesso!")
-        print(character_data)
+        # Criar uma nova sessão do banco de dados
+        session = SessionLocal()
+        try:
+            # Cria uma instância de Character
+            new_character = Character(
+                user_id=user_session.get("user_id"),
+                name=character_data["name"],
+                clas=character_data["class"],
+                class_image=self.class_image,
+                race=character_data["race"],
+                strength=character_data["attributes"]["Força"],
+                dexterity=character_data["attributes"]["Destreza"],
+                constitution=character_data["attributes"]["Constituição"],
+                intelligence=character_data["attributes"]["Inteligência"],
+                wisdom=character_data["attributes"]["Sabedoria"],
+                charisma=character_data["attributes"]["Carisma"],
+                skin_color=character_data["skin_color"],
+                hair=character_data["hair_color"]
+            )
+            # Adiciona e confirma a transação
+            session.add(new_character)
+            session.commit()
+
+            print("Personagem criado com sucesso!")
+        except Exception as e:
+            session.rollback()
+            print(f"Erro ao salvar o personagem: {e}")
+        finally:
+            session.close()

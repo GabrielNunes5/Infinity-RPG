@@ -9,6 +9,7 @@ class Character(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String(50), nullable=False)
     clas = Column(String(50), nullable=False)
+    class_image = Column(String(255), nullable=False)
     race = Column(String(50), nullable=False)
     strength = Column(Integer, nullable=False)
     dexterity = Column(Integer, nullable=False)
