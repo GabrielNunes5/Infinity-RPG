@@ -1,6 +1,7 @@
 import flet as ft
 from controllers.character_controller import (
-    load_characters, delete_character, prepare_character_for_edit)
+    load_characters, delete_character, prepare_character_for_edit
+)
 
 
 def character_view(page: ft.Page):
@@ -11,6 +12,7 @@ def character_view(page: ft.Page):
         page.go("/")
         return
 
+    # Botão para criar um novo personagem
     create_character_button = ft.ElevatedButton(
         bgcolor="#000000",
         color="#FFFFFF",
@@ -20,52 +22,46 @@ def character_view(page: ft.Page):
         on_click=lambda e: page.go("/create_character"),
     )
 
-    # Função para deletar um personagem
-    def handle_delete_character(e, char_id):
-        delete_character(char_id)
-        page.update()
+    # Criação de uma ListView para exibir os personagens
+    content = ft.ListView(
+        spacing=10,
+        padding=10,
+        auto_scroll=False,
+        expand=True,
+    )
 
-    # Função para editar um personagem
-    def handle_edit_character(e, char_id):
-        prepare_character_for_edit(char_id, page)
-        page.go("/edit_character")
-
-    # Layout principal para exibir os personagens
-    if not characters:
-        content = ft.Column(
-            controls=[
-                ft.Text(
-                    value="Nenhum personagem criado ainda.",
-                    size=20,
-                    weight="bold",
-                    color="#ffffff",
-                ),
-                create_character_button,
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        )
-    else:
-        # Exibição de personagens criados
-        character_cards = []
-        for char in characters:
-            character_cards.append(
+    # Função para atualizar a lista de personagens
+    def update_character_list():
+        # Limpa os controles existentes
+        content.controls.clear()
+        # Mensagem caso não haja nenhum personagem criado
+        if not characters:
+            content.controls.append(
                 ft.Container(
+                    content=ft.Text(
+                        value="Nenhum personagem criado ainda.",
+                        size=20,
+                        weight="bold",
+                        color="#ffffff",
+                    ),
+                    alignment=ft.alignment.center,
+                    expand=True,
+                )
+            )
+        else:
+            # Caso haja personagens, cria um card para cada um
+            for char in characters:
+                card = ft.Container(
                     content=ft.Column(
                         controls=[
-                            ft.Text(
-                                f"Nome: {char.name}", size=18, color="#ffffff"
-                            ),
+                            ft.Text(f"Nome: {char.name}",
+                                    size=18, color="#ffffff"),
                             ft.Image(src=char.class_image,
                                      width=100, height=100),
-                            ft.Text(
-                                f"Raça: {char.race}", size=16, color="#bbbbbb"
-                            ),
-                            ft.Text(
-                                f"Classe: {char.clas}",
-                                size=16,
-                                color="#bbbbbb"
-                            ),
+                            ft.Text(f"Raça: {char.race}",
+                                    size=16, color="#bbbbbb"),
+                            ft.Text(f"Classe: {char.clas}",
+                                    size=16, color="#bbbbbb"),
                             ft.Row(
                                 controls=[
                                     ft.IconButton(
@@ -73,16 +69,14 @@ def character_view(page: ft.Page):
                                         on_click=lambda e,
                                         char_id=char.id:
                                         handle_edit_character(
-                                            e, char_id
-                                        ),
+                                            e, char_id),
                                     ),
                                     ft.IconButton(
                                         icon=ft.Icons.DELETE,
                                         on_click=lambda e,
                                         char_id=char.id:
                                         handle_delete_character(
-                                            e, char_id
-                                        ),
+                                            e, char_id),
                                     ),
                                 ]
                             ),
@@ -93,23 +87,24 @@ def character_view(page: ft.Page):
                     bgcolor="#333333",
                     border_radius=10,
                 )
-            )
+                content.controls.append(card)
 
-        # Define o conteúdo com personagens
-        content = ft.Column(
-            controls=[
-                ft.Text(
-                    value="Seus Personagens:",
-                    size=25,
-                    weight="bold",
-                    color="#ffffff",
-                ),
-                *character_cards,
-                create_character_button,
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        )
+    def handle_delete_character(e, char_id):
+        # Exclui o personagem e atualiza a lista
+        delete_character(char_id)
+        # Remove o personagem da lista local e atualiza a exibição
+        nonlocal characters
+        characters = [char for char in characters if char.id != char_id]
+        update_character_list()
+        page.update()
+
+    def handle_edit_character(e, char_id):
+        # Prepara a edição do personagem e redireciona para a tela de edição
+        prepare_character_for_edit(char_id, page)
+        page.go("/edit_character")
+
+    # Atualiza a lista de personagens inicialmente
+    update_character_list()
 
     # Página principal
     character_page = ft.View(
@@ -126,11 +121,13 @@ def character_view(page: ft.Page):
                         content=ft.Column(
                             controls=[
                                 ft.Text(
-                                    value="Personagens",
-                                    size=45,
-                                    color="#ffffff"
+                                    value="Seus Personagens:",
+                                    size=25,
+                                    weight="bold",
+                                    color="#ffffff",
                                 ),
                                 content,
+                                create_character_button,
                             ],
                             alignment=ft.MainAxisAlignment.START,
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,

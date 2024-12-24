@@ -1,7 +1,6 @@
 import flet as ft
 from controllers.create_character_controller import CreateCharacterController
-from config import HAIR_AND_SKIN_COLORS
-from config import DND_RACES, atribute_configs
+from config import DND_RACES, atribute_configs, HAIR_COLORS, SKIN_COLORS
 
 
 def create_character_view(page: ft.Page):
@@ -28,6 +27,10 @@ def create_character_view(page: ft.Page):
         width=200
     )
 
+    character_redirect_text = ft.TextButton(
+        "Voltar para Pagina de Personagens",
+        on_click=lambda _: page.go("/characters"))
+
     # Função para gerar opções com círculos coloridos
     def generate_color_dropdown(options, label):
         return ft.Dropdown(
@@ -53,10 +56,10 @@ def create_character_view(page: ft.Page):
         )
 
     hair_color_dropdown = generate_color_dropdown(
-        HAIR_AND_SKIN_COLORS, "Cor do Cabelo")
+        HAIR_COLORS, "Cor do Cabelo")
 
     skin_color_dropdown = generate_color_dropdown(
-        HAIR_AND_SKIN_COLORS, "Cor da Pele")
+        SKIN_COLORS, "Cor da Pele")
 
     # Validação dos atributos
     def validate_input(e):
@@ -146,7 +149,7 @@ def create_character_view(page: ft.Page):
     main_container = ft.Container(
         bgcolor="#212121",
         width=800,
-        height=680,
+        height=690,
         border_radius=35,
         padding=20,
         content=ft.Column(
@@ -174,7 +177,8 @@ def create_character_view(page: ft.Page):
                 race_dropdown,
                 hair_color_dropdown,
                 skin_color_dropdown,
-                create_character_button
+                create_character_button,
+                character_redirect_text
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )

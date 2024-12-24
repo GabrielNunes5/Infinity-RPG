@@ -10,7 +10,7 @@ def main(page: ft.Page):
     page.title = "Infinity RPG"
     page.theme_mode = ft.ThemeMode.DARK
     page.window.maximized = True
-    page.window.minimizable = False
+    page.window.minimized = False
 
     def route_change(route):
         page.views.clear()

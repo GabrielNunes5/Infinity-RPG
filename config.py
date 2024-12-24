@@ -28,12 +28,20 @@ DND_RACES = [
     "Dragonborn"
 ]
 
-HAIR_AND_SKIN_COLORS = [
+HAIR_COLORS = [
     {"name": "Preto", "hex": "#000000"},
     {"name": "Castanho", "hex": "#8B4513"},
     {"name": "Loiro", "hex": "#FFD700"},
     {"name": "Ruivo", "hex": "#FF4500"},
     {"name": "Branco", "hex": "#FFFFFF"},
+]
+SKIN_COLORS = [
+    {"name": "Preto", "hex": "#3B2F2F"},
+    {"name": "Marrom Escuro", "hex": "#4E3629"},
+    {"name": "Marrom Médio", "hex": "#8B5A2B"},
+    {"name": "Marrom Claro", "hex": "#C69C6D"},
+    {"name": "Pálido", "hex": "#F5CBA7"},
+    {"name": "Muito Claro", "hex": "#FFDBAC"}
 ]
 
 
