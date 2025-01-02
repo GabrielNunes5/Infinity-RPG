@@ -54,7 +54,7 @@ def register_view(page: ft.Page):
         password = password_field.value
         if len(password) < 12:
             password_feedback.value = (
-                "A senha deve ter pelo menos 12 caracteres.")
+                "A senha deve ter pelo menos 8 caracteres.")
             password_feedback.color = "red"
         elif not any(c.isupper() for c in password):
             password_feedback.value = (
@@ -135,7 +135,7 @@ def register_view(page: ft.Page):
                 ft.Text(
                     "Email: Deve ser um email valido: exemplo@dominio.com"),
                 ft.Text(
-                    "Senha: Deve conter ao menos 12 caracteres, incluindo "
+                    "Senha: Deve conter ao menos 8 caracteres, incluindo "
                     "1 letra maiúscula, 1 caractere especial e 1 número."),
             ]
         ),

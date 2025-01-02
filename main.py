@@ -12,6 +12,7 @@ def main(page: ft.Page):
     page.window.maximized = True
     page.window.minimized = False
 
+    # Função para lidar com as mudanças de rotas/views
     def route_change(route):
         page.views.clear()
         if page.route == "/":

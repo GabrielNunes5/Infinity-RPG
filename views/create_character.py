@@ -3,7 +3,7 @@ from controllers.create_character_controller import CreateCharacterController
 from config import DND_RACES, atribute_configs, HAIR_COLORS, SKIN_COLORS
 
 
-def create_character_view(page: ft.Page):
+def create_character_view(page: ft.Page, character_id=None):
     # Função de atualização da view
     def update_view():
         class_image.src = controller.class_image
@@ -27,8 +27,9 @@ def create_character_view(page: ft.Page):
         width=200
     )
 
+    # Texto para redirecionar para a página de personagens
     character_redirect_text = ft.TextButton(
-        "Voltar para Pagina de Personagens",
+        "Voltar para Página de Personagens",
         on_click=lambda _: page.go("/characters"))
 
     # Função para gerar opções com círculos coloridos
@@ -55,9 +56,11 @@ def create_character_view(page: ft.Page):
             width=200
         )
 
+    # Dropdown da cor de cabelo
     hair_color_dropdown = generate_color_dropdown(
         HAIR_COLORS, "Cor do Cabelo")
 
+    # Dropdown da cor da pele
     skin_color_dropdown = generate_color_dropdown(
         SKIN_COLORS, "Cor da Pele")
 
@@ -79,8 +82,7 @@ def create_character_view(page: ft.Page):
                               **atribute_configs),
         "Constituição": ft.TextField(label="Constituição",
                                      on_blur=validate_input,
-                                     **atribute_configs
-                                     ),
+                                     **atribute_configs),
         "Destreza": ft.TextField(label="Destreza",
                                  on_blur=validate_input,
                                  **atribute_configs),
@@ -119,11 +121,28 @@ def create_character_view(page: ft.Page):
             "race": race_dropdown.value,
             "hair_color": hair_color_dropdown.value,
             "skin_color": skin_color_dropdown.value,
-            "attributes": {k: int(
-                v.value) for k, v in attribute_fields.items()}
+            "attributes": {k:
+                           int(v.value) for k, v in attribute_fields.items()}
         }
         controller.save_character(character_data)
         page.go('/characters')
+
+    # Botão de instruções
+    def show_instructions(e):
+        instructions_dialog.open = True
+        page.update()
+
+    instructions_dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Instruções de preenchimento"),
+        content=ft.Column(
+            controls=[ft.Text("Complete os campos corretamente.")],
+        ),
+        actions=[
+            ft.TextButton("Fechar", on_click=lambda _: setattr(
+                instructions_dialog, "open", False))
+        ]
+    )
 
     # Botões de navegação para trocar a imagem da classe
     navigation_buttons = ft.Row(
@@ -145,56 +164,64 @@ def create_character_view(page: ft.Page):
         text="Criar Novo Personagem",
         on_click=create_character)
 
-    # Layout dentro do Container principal
-    main_container = ft.Container(
-        bgcolor="#212121",
-        width=800,
-        height=690,
-        border_radius=35,
-        padding=20,
-        content=ft.Column(
-            controls=[
-                character_name_field,
-                class_image,
-                navigation_buttons,
-                class_name_field,
-                ft.Row(
-                    [
-                        attribute_fields["Força"],
-                        attribute_fields["Destreza"],
-                        attribute_fields["Inteligência"]
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER
-                ),
-                ft.Row(
-                    [
-                        attribute_fields["Constituição"],
-                        attribute_fields["Sabedoria"],
-                        attribute_fields["Carisma"]
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER
-                ),
-                race_dropdown,
-                hair_color_dropdown,
-                skin_color_dropdown,
-                create_character_button,
-                character_redirect_text
-            ],
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER
-        )
-    )
+    # Carregar dados do personagem, se disponíveis
+    if character_id:
+        controller.load_character(character_id)
+        character_name_field.value = character_id["name"]
+        race_dropdown.value = character_id["race"]
+        hair_color_dropdown.value = character_id["hair_color"]
+        skin_color_dropdown.value = character_id["skin_color"]
+        for attr, field in attribute_fields.items():
+            field.value = str(character_id["attributes"][attr])
 
-    # Row principal que segura o container
-    create_character_view = ft.View(
-        route="/create_character",
-        controls=[
+    # Estrutura da página
+    create_character_page = ft.View(
+        "/create_character",
+        [
             ft.Row(
-                controls=[main_container],
+                controls=[
+                    ft.Container(
+                        bgcolor="#212121",
+                        width=800,
+                        height=690,
+                        border_radius=35,
+                        padding=20,
+                        content=ft.Column(
+                            controls=[
+                                character_name_field,
+                                class_image,
+                                navigation_buttons,
+                                class_name_field,
+                                ft.Row(
+                                    [
+                                        attribute_fields["Força"],
+                                        attribute_fields["Destreza"],
+                                        attribute_fields["Inteligência"]
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER
+                                ),
+                                ft.Row(
+                                    [
+                                        attribute_fields["Constituição"],
+                                        attribute_fields["Sabedoria"],
+                                        attribute_fields["Carisma"]
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER
+                                ),
+                                race_dropdown,
+                                hair_color_dropdown,
+                                skin_color_dropdown,
+                                create_character_button,
+                                character_redirect_text
+                            ],
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                        )
+                    )
+                ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER
-            )
-        ],
-        bgcolor="#000000"
+            ),
+        ]
     )
 
-    return create_character_view
+    return create_character_page

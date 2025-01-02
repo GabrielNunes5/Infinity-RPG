@@ -66,15 +66,13 @@ def character_view(page: ft.Page):
                                 controls=[
                                     ft.IconButton(
                                         icon=ft.Icons.EDIT,
-                                        on_click=lambda e,
-                                        char_id=char.id:
+                                        on_click=lambda e, char_id=char.id:
                                         handle_edit_character(
                                             e, char_id),
                                     ),
                                     ft.IconButton(
                                         icon=ft.Icons.DELETE,
-                                        on_click=lambda e,
-                                        char_id=char.id:
+                                        on_click=lambda e, char_id=char.id:
                                         handle_delete_character(
                                             e, char_id),
                                     ),
@@ -101,12 +99,13 @@ def character_view(page: ft.Page):
     def handle_edit_character(e, char_id):
         # Prepara a edição do personagem e redireciona para a tela de edição
         prepare_character_for_edit(char_id, page)
-        page.go("/edit_character")
+        print(f"Editando personagem {char_id}")
+        page.go(f"/create_character?character_id={char_id}")
 
     # Atualiza a lista de personagens inicialmente
     update_character_list()
 
-    # Página principal
+    # Estrutura da página
     character_page = ft.View(
         "/characters",
         [

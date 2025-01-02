@@ -43,7 +43,7 @@ def login_view(page: ft.Page):
         "Não possui conta? Cadastre-se agora",
         on_click=lambda _: page.go("/register"))
 
-    # Página de login
+    # Estrutura da página
     login_page = ft.View(
         "/",
         [

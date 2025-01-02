@@ -71,3 +71,31 @@ class CreateCharacterController:
             print(f"Erro ao salvar o personagem: {e}")
         finally:
             session.close()
+
+    def load_character(self, character_data):
+        self.character_data = character_data
+        self.current_class_index = next(
+            (i for i,
+             cls in enumerate(
+                 self.classes) if cls["name"] == character_data["class"]), 0)
+
+    def update_character(self, character_id, character_data):
+        session = SessionLocal()
+        try:
+            character = session.query(Character).filter(
+                Character.id == character_id).first()
+            if character:
+                character.name = character_data["name"]
+                character.clas = character_data["class"]
+                character.race = character_data["race"]
+                character.strength = character_data["attributes"]["Força"]
+                character.dexterity = character_data["attributes"]["Destreza"]
+                character.constitution = character_data["attributes"]["Constituição"]
+                character.intelligence = character_data["attributes"]["Inteligência"]
+                character.wisdom = character_data["attributes"]["Sabedoria"]
+                character.charisma = character_data["attributes"]["Carisma"]
+                character.skin_color = character_data["skin_color"]
+                character.hair = character_data["hair_color"]
+                session.commit()
+        finally:
+            session.close()

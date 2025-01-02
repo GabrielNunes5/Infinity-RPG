@@ -23,8 +23,8 @@ class UserController:
             errors.append('Email invalido')
 
         # Validar senha
-        if len(password) < 12:
-            errors.append('Senha precisa ter pelo menos 12 caracteres!')
+        if len(password) < 8:
+            errors.append('Senha precisa ter pelo menos 8 caracteres!')
         if not any(char.isupper() for char in password):
             errors.append('Senha precisa ter ao menos uma letra maiuscula!')
         if not any(char in "!@#$%^&*()_+-=[]{}|;:,.<>?/" for char in password):
