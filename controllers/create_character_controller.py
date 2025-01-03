@@ -87,6 +87,7 @@ class CreateCharacterController:
             if character:
                 character.name = character_data["name"]
                 character.clas = character_data["class"]
+                character.class_image = character_data["class_image"]
                 character.race = character_data["race"]
                 character.strength = character_data["attributes"]["Força"]
                 character.dexterity = character_data["attributes"]["Destreza"]

@@ -1,6 +1,8 @@
 import flet as ft
 from controllers.create_character_controller import CreateCharacterController
 from config import DND_RACES, atribute_configs, HAIR_COLORS, SKIN_COLORS
+from models.database import SessionLocal
+from models.character import Character
 
 
 def create_character_view(page: ft.Page, character_id=None):
@@ -124,7 +126,9 @@ def create_character_view(page: ft.Page, character_id=None):
             "attributes": {k:
                            int(v.value) for k, v in attribute_fields.items()}
         }
-        controller.save_character(character_data)
+        controller.update_character(character_id, character_data)
+        if not character_id:
+            controller.save_character(character_data)
         page.go('/characters')
 
     # Botão de instruções
@@ -164,15 +168,33 @@ def create_character_view(page: ft.Page, character_id=None):
         text="Criar Novo Personagem",
         on_click=create_character)
 
-    # Carregar dados do personagem, se disponíveis
+    # Verifica se está no modo de edição
     if character_id:
-        controller.load_character(character_id)
-        character_name_field.value = character_id["name"]
-        race_dropdown.value = character_id["race"]
-        hair_color_dropdown.value = character_id["hair_color"]
-        skin_color_dropdown.value = character_id["skin_color"]
-        for attr, field in attribute_fields.items():
-            field.value = str(character_id["attributes"][attr])
+        session = SessionLocal()
+        try:
+            # Busca os dados do personagem no banco de dados
+            character = session.query(Character).filter(
+                Character.id == character_id).first()
+            if character:
+                # Preencha os campos com os dados do personagem
+                print(f"Carregando dados do personagem {character.name}")
+                character_name_field.value = character.name
+                class_image.src = character.class_image
+                class_name_field.value = character.clas
+                race_dropdown.value = character.race
+                skin_color_dropdown.value = character.skin_color
+                hair_color_dropdown.value = character.hair
+                attribute_fields["Força"].value = str(character.strength)
+                attribute_fields["Constituição"].value = str(
+                    character.constitution)
+                attribute_fields["Destreza"].value = str(character.dexterity)
+                attribute_fields["Inteligência"].value = str(
+                    character.intelligence)
+                attribute_fields["Sabedoria"].value = str(character.wisdom)
+                attribute_fields["Carisma"].value = str(character.charisma)
+                create_character_button.text = "Salvar Personagem"
+        finally:
+            session.close()
 
     # Estrutura da página
     create_character_page = ft.View(
