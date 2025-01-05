@@ -52,12 +52,18 @@ class CreateCharacterController:
                 clas=character_data["class"],
                 class_image=self.class_image,
                 race=character_data["race"],
-                strength=character_data["attributes"]["Força"],
-                dexterity=character_data["attributes"]["Destreza"],
-                constitution=character_data["attributes"]["Constituição"],
-                intelligence=character_data["attributes"]["Inteligência"],
-                wisdom=character_data["attributes"]["Sabedoria"],
-                charisma=character_data["attributes"]["Carisma"],
+                strength=character_data["attributes"]
+                ["Força"],
+                dexterity=character_data["attributes"]
+                ["Destreza"],
+                constitution=character_data["attributes"]
+                ["Constituição"],
+                intelligence=character_data["attributes"]
+                ["Inteligência"],
+                wisdom=character_data["attributes"]
+                ["Sabedoria"],
+                charisma=character_data["attributes"]
+                ["Carisma"],
                 skin_color=character_data["skin_color"],
                 hair=character_data["hair_color"]
             )
@@ -89,12 +95,18 @@ class CreateCharacterController:
                 character.clas = character_data["class"]
                 character.class_image = character_data["class_image"]
                 character.race = character_data["race"]
-                character.strength = character_data["attributes"]["Força"]
-                character.dexterity = character_data["attributes"]["Destreza"]
-                character.constitution = character_data["attributes"]["Constituição"]
-                character.intelligence = character_data["attributes"]["Inteligência"]
-                character.wisdom = character_data["attributes"]["Sabedoria"]
-                character.charisma = character_data["attributes"]["Carisma"]
+                character.strength = character_data["attributes"]
+                ["Força"]
+                character.dexterity = character_data["attributes"]
+                ["Destreza"]
+                character.constitution = character_data["attributes"]
+                ["Constituição"]
+                character.intelligence = character_data["attributes"]
+                ["Inteligência"]
+                character.wisdom = character_data["attributes"]
+                ["Sabedoria"]
+                character.charisma = character_data["attributes"]
+                ["Carisma"]
                 character.skin_color = character_data["skin_color"]
                 character.hair = character_data["hair_color"]
                 session.commit()

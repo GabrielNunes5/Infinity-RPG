@@ -140,20 +140,34 @@ def create_character_view(page: ft.Page, character_id=None):
         modal=True,
         title=ft.Text("Instruções de preenchimento"),
         content=ft.Column(
-            controls=[ft.Text("Complete os campos corretamente.")],
+            controls=[
+                ft.Text("Complete os campos corretamente.",
+                        size=20, weight=ft.FontWeight.W_700),
+                ft.Text("Crie o nome de personagem unico"),
+                ft.Text("Selecione a classe do seu personagem."),
+                ft.Text("Os atributos devem estar entre 8 e 20."),
+                ft.Text("Força: Força fisica e combate."),
+                ft.Text("Constituição: Resistência a dano e Resiliencia."),
+                ft.Text("Destreza: Agilidade e precisão."),
+                ft.Text("Inteligência: Capacidade de aprendizado."),
+                ft.Text("Sabedoria: Percepção e intuição."),
+                ft.Text("Carisma: Persuasão e liderança."),
+                ft.Text("Selecione a raça, cor do cabelo e cor da pele."),
+                ft.Text("Clique em 'Criar Novo Personagem' para salvar."),
+            ],
         ),
         actions=[
-            ft.TextButton("Fechar", on_click=lambda _: setattr(
-                instructions_dialog, "open", False))
+            ft.TextButton("Fechar", on_click=lambda e: (
+                setattr(instructions_dialog, "open", False), page.update()))
         ]
     )
 
     # Botões de navegação para trocar a imagem da classe
     navigation_buttons = ft.Row(
         [
-            ft.IconButton(icon=ft.icons.ARROW_BACK,
+            ft.IconButton(icon=ft.Icons.ARROW_BACK,
                           on_click=controller.previous_class),
-            ft.IconButton(icon=ft.icons.ARROW_FORWARD,
+            ft.IconButton(icon=ft.Icons.ARROW_FORWARD,
                           on_click=controller.next_class)
         ],
         alignment=ft.MainAxisAlignment.CENTER
@@ -213,7 +227,16 @@ def create_character_view(page: ft.Page, character_id=None):
                                 character_name_field,
                                 class_image,
                                 navigation_buttons,
-                                class_name_field,
+                                ft.Row(
+                                    [
+                                        class_name_field,
+                                        ft.IconButton(
+                                            icon=ft.Icons.HELP,
+                                            on_click=show_instructions
+                                        )
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER
+                                ),
                                 ft.Row(
                                     [
                                         attribute_fields["Força"],
@@ -234,7 +257,8 @@ def create_character_view(page: ft.Page, character_id=None):
                                 hair_color_dropdown,
                                 skin_color_dropdown,
                                 create_character_button,
-                                character_redirect_text
+                                character_redirect_text,
+                                instructions_dialog
                             ],
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER
                         )

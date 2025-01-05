@@ -64,14 +64,53 @@ def character_view(page: ft.Page):
                                     size=16, color="#bbbbbb"),
                             ft.Row(
                                 controls=[
+                                    ft.Icon(ft.Icons.SPORTS_MMA_SHARP,
+                                            color="#FF8C00"),
+                                    ft.Text(
+                                        f"Força: {char.strength}",
+                                        size=16, color="#bbbbbb"),
+                                    ft.Icon(ft.Icons.FAVORITE,
+                                            color="#FF0000"),
+                                    ft.Text(
+                                        f"Constituição: {char.constitution}",
+                                        size=16, color="#bbbbbb"),
+                                    ft.Icon(ft.Icons.DIRECTIONS_RUN,
+                                            color="#FFFF00"),
+                                    ft.Text(
+                                        f"Destreza:{char.dexterity}",
+                                        size=16, color="#bbbbbb"),
+                                ]
+                            ),
+                            ft.Row(
+                                controls=[
+                                    ft.Icon(ft.Icons.MENU_BOOK_SHARP,
+                                            color="#00FFFF"),
+                                    ft.Text(
+                                        f"Inteligência:{char.intelligence}",
+                                        size=16, color="#bbbbbb"),
+                                    ft.Icon(ft.Icons.SCHOOL_SHARP,
+                                            color="#8A2BE2"),
+                                    ft.Text(
+                                        f"Sabedoria: {char.wisdom}",
+                                        size=16, color="#bbbbbb"),
+                                    ft.Icon(ft.Icons.EMOJI_PEOPLE,
+                                            color="#FF69B4"),
+                                    ft.Text(
+                                        f"Carisma: {char.charisma}",
+                                        size=16, color="#bbbbbb"),
+                                ]),
+                            ft.Row(
+                                controls=[
                                     ft.IconButton(
                                         icon=ft.Icons.EDIT,
+                                        icon_color="#2149ad",
                                         on_click=lambda e, char_id=char.id:
                                         handle_edit_character(
                                             e, char_id),
                                     ),
                                     ft.IconButton(
                                         icon=ft.Icons.DELETE,
+                                        icon_color="#ad2121",
                                         on_click=lambda e, char_id=char.id:
                                         handle_delete_character(
                                             e, char_id),
