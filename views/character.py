@@ -30,6 +30,17 @@ def character_view(page: ft.Page):
         expand=True,
     )
 
+    # Texto para fazer logout
+    logout = ft.TextButton(
+        "Sair da conta",
+        on_click=lambda e: handle_logout(e, page)
+    )
+
+    def handle_logout(e, page):
+        # Lógica para fazer logout do sistema
+        page.session.clear()
+        page.go("/")
+
     # Função para atualizar a lista de personagens
     def update_character_list():
         # Limpa os controles existentes
@@ -166,6 +177,7 @@ def character_view(page: ft.Page):
                                 ),
                                 content,
                                 create_character_button,
+                                logout
                             ],
                             alignment=ft.MainAxisAlignment.START,
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,

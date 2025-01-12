@@ -52,7 +52,7 @@ def register_view(page: ft.Page):
     def validate_password(e):
         """Validação em tempo real para a senha"""
         password = password_field.value
-        if len(password) < 12:
+        if len(password) < 8:
             password_feedback.value = (
                 "A senha deve ter pelo menos 8 caracteres.")
             password_feedback.color = "red"

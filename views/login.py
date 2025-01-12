@@ -16,7 +16,6 @@ def login_view(page: ft.Page):
 
         if result["status"]:
             user_session["user_id"] = result["user_id"]
-            # print(f"Usuário {result['username']} logado com sucesso!")
             page.go("/characters")
         else:
             snack_bar = ft.SnackBar(ft.Text(result["message"]))

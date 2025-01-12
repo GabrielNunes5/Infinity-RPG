@@ -178,7 +178,7 @@ def create_character_view(page: ft.Page, character_id=None):
         bgcolor="#000000",
         color="#FFFFFF",
         width=210,
-        height=25,
+        height=20,
         text="Criar Novo Personagem",
         on_click=create_character)
 
@@ -219,7 +219,7 @@ def create_character_view(page: ft.Page, character_id=None):
                     ft.Container(
                         bgcolor="#212121",
                         width=800,
-                        height=690,
+                        height=700,
                         border_radius=35,
                         padding=20,
                         content=ft.Column(
@@ -265,7 +265,8 @@ def create_character_view(page: ft.Page, character_id=None):
                     )
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
             ),
         ]
     )
