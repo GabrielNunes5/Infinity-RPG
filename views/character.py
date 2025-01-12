@@ -114,6 +114,7 @@ def character_view(page: ft.Page):
                                 controls=[
                                     ft.IconButton(
                                         icon=ft.Icons.EDIT,
+                                        tooltip="Editar personagem",
                                         icon_color="#2149ad",
                                         on_click=lambda e, char_id=char.id:
                                         handle_edit_character(
@@ -121,6 +122,7 @@ def character_view(page: ft.Page):
                                     ),
                                     ft.IconButton(
                                         icon=ft.Icons.DELETE,
+                                        tooltip="Excluir personagem",
                                         icon_color="#ad2121",
                                         on_click=lambda e, char_id=char.id:
                                         handle_delete_character(

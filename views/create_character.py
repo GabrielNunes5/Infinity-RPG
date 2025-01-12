@@ -190,8 +190,6 @@ def create_character_view(page: ft.Page, character_id=None):
             character = session.query(Character).filter(
                 Character.id == character_id).first()
             if character:
-                # Preencha os campos com os dados do personagem
-                print(f"Carregando dados do personagem {character.name}")
                 character_name_field.value = character.name
                 class_image.src = character.class_image
                 class_name_field.value = character.clas
@@ -221,7 +219,7 @@ def create_character_view(page: ft.Page, character_id=None):
                         width=800,
                         height=700,
                         border_radius=35,
-                        padding=20,
+                        padding=10,
                         content=ft.Column(
                             controls=[
                                 character_name_field,
