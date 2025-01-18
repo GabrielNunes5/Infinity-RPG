@@ -70,11 +70,8 @@ class CreateCharacterController:
             # Adiciona e confirma a transação
             session.add(new_character)
             session.commit()
-
-            print("Personagem criado com sucesso!")
-        except Exception as e:
+        except Exception:
             session.rollback()
-            print(f"Erro ao salvar o personagem: {e}")
         finally:
             session.close()
 

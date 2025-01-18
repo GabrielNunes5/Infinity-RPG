@@ -151,7 +151,6 @@ def character_view(page: ft.Page):
     def handle_edit_character(e, char_id):
         # Prepara a edição do personagem e redireciona para a tela de edição
         prepare_character_for_edit(char_id, page)
-        print(f"Editando personagem {char_id}")
         page.go(f"/create_character?character_id={char_id}")
 
     # Atualiza a lista de personagens inicialmente
