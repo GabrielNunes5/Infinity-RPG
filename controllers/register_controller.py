@@ -43,6 +43,19 @@ class UserController:
         return errors
 
     @staticmethod
+    def validate_password(password):
+        errors = []
+        # Validar senha
+        if len(password) < 8:
+            errors.append('Senha precisa ter pelo menos 8 caracteres!')
+        if not any(char.isupper() for char in password):
+            errors.append('Senha precisa ter ao menos uma letra maiúscula!')
+        if not any(char in "!@#$%^&*()_+-=[]{}|;:,.<>?/" for char in password):
+            errors.append('Senha precisa ter ao menos um caractere especial!')
+
+        return errors
+
+    @staticmethod
     def register_user(name, username, email, password):
         session = SessionLocal()
         user = User(

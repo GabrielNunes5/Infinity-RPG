@@ -1,6 +1,7 @@
 import flet as ft
 from config import input_configs, btn_configs
 from controllers.login_controller import LoginController
+from controllers.register_controller import UserController
 
 # Armazena o ID do usuário logado
 user_session = {"user_id": None}
@@ -34,7 +35,6 @@ def login_view(page: ft.Page):
             # Abre o modal para redefinir a senha
             forgot_psw_model.open = False
             reset_psw_model.open = True
-            page.update()
         else:
             # Exibe um alerta caso não encontrado
             alert = ft.AlertDialog(
@@ -48,12 +48,17 @@ def login_view(page: ft.Page):
             )
             page.dialog = alert
             alert.open = True
-            page.update()
+            # Limpa os campos no modal
+            username_field_forgot.value = ""
+            email_field_forgot.value = ""
+        page.update()
 
     def reset_password(e):
+        username = username_field_forgot.value
         new_password = new_password_field.value
         confirm_password = confirm_password_field.value
 
+        # Valida se as senhas coincidem
         if new_password != confirm_password:
             # Exibe um alerta se as senhas não coincidem
             alert = ft.AlertDialog(
@@ -64,34 +69,65 @@ def login_view(page: ft.Page):
                         "Fechar", on_click=lambda _: page.close(alert))
                 ],
             )
+            # Limpa os campos no modal
+            username_field_forgot.value = ""
+            email_field_forgot.value = ""
             page.dialog = alert
             alert.open = True
-            page.update()
         else:
-            # Atualiza a senha no banco de dados
-            username = username_field_forgot.value
-            result = LoginController.update_password(username, new_password)
+            # Valida as regras da senha
+            errors = UserController.validate_password(password=new_password)
 
-            if result["status"]:
-                snack_bar = ft.SnackBar(
-                    ft.Text("Senha redefinida com sucesso!"))
-                page.overlay.append(snack_bar)
-                snack_bar.open = True
-                reset_psw_model.open = False
-                page.update()
-            else:
+            # Filtra erros apenas relacionados à senha
+            password_errors = [error for error in errors if "Senha" in error]
+
+            if password_errors:
+                # Exibe um alerta caso a senha não atenda os critérios
                 alert = ft.AlertDialog(
                     title=ft.Text("Erro"),
-                    content=ft.Text(
-                        "Erro ao atualizar a senha. Tente novamente."),
+                    content=ft.Text("\n".join(password_errors)),
                     actions=[
                         ft.TextButton(
                             "Fechar", on_click=lambda _: page.close(alert))
                     ],
                 )
+                # Limpa os campos no modal
+                username_field_forgot.value = ""
+                email_field_forgot.value = ""
                 page.dialog = alert
                 alert.open = True
-                page.update()
+            else:
+                # Atualiza a senha no banco de dados
+                result = LoginController.update_password(
+                    username, new_password)
+
+                if result["status"]:
+                    snack_bar = ft.SnackBar(
+                        ft.Text("Senha redefinida com sucesso!"))
+                    page.overlay.append(snack_bar)
+                    snack_bar.open = True
+                    reset_psw_model.open = False
+                    new_password_field.value = ""
+                    confirm_password_field.value = ""
+                else:
+                    alert = ft.AlertDialog(
+                        title=ft.Text("Erro"),
+                        content=ft.Text(
+                            "Erro ao atualizar a senha. Tente novamente."),
+                        actions=[
+                            ft.TextButton(
+                                "Fechar", on_click=lambda _: page.close(alert))
+                        ],
+                    )
+                    new_password_field.value = ""
+                    confirm_password_field.value = ""
+                    page.dialog = alert
+                    alert.open = True
+
+        # Limpa os campos no modal
+        new_password_field.value = ""
+        confirm_password_field.value = ""
+        page.update()
 
     def show_forgot_psw_modal(e):
         forgot_psw_model.open = True
@@ -140,7 +176,12 @@ def login_view(page: ft.Page):
         actions=[
             ft.TextButton(
                 "Fechar",
-                on_click=lambda _: page.close(forgot_psw_model)),
+                on_click=lambda _: (
+                    page.close(forgot_psw_model),
+                    setattr(username_field_forgot, 'value', ""),
+                    setattr(email_field_forgot, 'value', "")
+                )
+            ),
             ft.TextButton(
                 "Verificar",
                 on_click=verify_user_and_email),
@@ -172,7 +213,11 @@ def login_view(page: ft.Page):
         actions=[
             ft.TextButton(
                 "Fechar",
-                on_click=lambda _: page.close(reset_psw_model)),
+                on_click=lambda _: (
+                    page.close(reset_psw_model),
+                    setattr(username_field_forgot, 'value', ""),
+                    setattr(email_field_forgot, 'value', "")
+                )),
             ft.TextButton(
                 "Redefinir",
                 on_click=reset_password),
