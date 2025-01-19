@@ -8,18 +8,18 @@ class CreateCharacterController:
         self.page = page
         self.update_view = update_view
         self.classes = [
-            {"name": "Bárbaro", "image": "assets/barbaro.png"},
-            {"name": "Bardo", "image": "assets/bardo.png"},
-            {"name": "Bruxo", "image": "assets/bruxo.png"},
-            {"name": "Caçador", "image": "assets/caçador.png"},
-            {"name": "Druida", "image": "assets/druida.png"},
-            {"name": "Feiticeiro", "image": "assets/feiticeiro.png"},
-            {"name": "Guerreiro", "image": "assets/guerreiro.png"},
-            {"name": "Ladino", "image": "assets/ladino.png"},
-            {"name": "Mago", "image": "assets/mago.png"},
-            {"name": "Monge", "image": "assets/monge.png"},
-            {"name": "Paladino", "image": "assets/paladino.png"},
-            {"name": "Sacerdote", "image": "assets/sacerdote.png"},
+            {"name": "Bárbaro", "image": "images/barbaro.png"},
+            {"name": "Bardo", "image": "images/bardo.png"},
+            {"name": "Bruxo", "image": "images/bruxo.png"},
+            {"name": "Caçador", "image": "images/caçador.png"},
+            {"name": "Druida", "image": "images/druida.png"},
+            {"name": "Feiticeiro", "image": "images/feiticeiro.png"},
+            {"name": "Guerreiro", "image": "images/guerreiro.png"},
+            {"name": "Ladino", "image": "images/ladino.png"},
+            {"name": "Mago", "image": "images/mago.png"},
+            {"name": "Monge", "image": "images/monge.png"},
+            {"name": "Paladino", "image": "images/paladino.png"},
+            {"name": "Sacerdote", "image": "images/sacerdote.png"},
         ]
         self.current_class_index = 0
 
