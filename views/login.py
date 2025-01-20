@@ -46,10 +46,11 @@ def login_view(page: ft.Page):
                         "Fechar", on_click=lambda _: page.close(alert))
                 ],
             )
+            clear_fields(new_password_field,
+                         confirm_password_field,
+                         username_field_forgot, email_field_forgot)
             page.dialog = alert
             alert.open = True
-
-        clear_fields(username_field_forgot, email_field_forgot)
         page.update()
 
     def reset_password(e):
@@ -66,6 +67,9 @@ def login_view(page: ft.Page):
                         "Fechar", on_click=lambda _: page.close(alert))
                 ],
             )
+            clear_fields(new_password_field,
+                         confirm_password_field,
+                         username_field_forgot, email_field_forgot)
             page.dialog = alert
             alert.open = True
         else:
@@ -81,6 +85,9 @@ def login_view(page: ft.Page):
                             "Fechar", on_click=lambda _: page.close(alert))
                     ],
                 )
+                clear_fields(new_password_field,
+                             confirm_password_field,
+                             username_field_forgot, email_field_forgot)
                 page.dialog = alert
                 alert.open = True
             else:
@@ -91,6 +98,9 @@ def login_view(page: ft.Page):
                     snack_bar = ft.SnackBar(
                         ft.Text("Senha redefinida com sucesso!"))
                     page.overlay.append(snack_bar)
+                    clear_fields(new_password_field,
+                                 confirm_password_field,
+                                 username_field_forgot, email_field_forgot)
                     snack_bar.open = True
                     reset_psw_model.open = False
                 else:
@@ -103,10 +113,12 @@ def login_view(page: ft.Page):
                                 "Fechar", on_click=lambda _: page.close(alert))
                         ],
                     )
+                    clear_fields(new_password_field,
+                                 confirm_password_field,
+                                 username_field_forgot, email_field_forgot)
                     page.dialog = alert
                     alert.open = True
 
-        clear_fields(new_password_field, confirm_password_field)
         page.update()
 
     def show_forgot_psw_modal(e):
@@ -161,7 +173,9 @@ def login_view(page: ft.Page):
                 "Fechar",
                 on_click=lambda _: (
                     page.close(forgot_psw_model),
-                    clear_fields(username_field_forgot, email_field_forgot),
+                    clear_fields(new_password_field,
+                                 confirm_password_field,
+                                 username_field_forgot, email_field_forgot),
                     page.update(),
                 ),
             ),
@@ -203,7 +217,9 @@ def login_view(page: ft.Page):
                 "Fechar",
                 on_click=lambda _: (
                     page.close(reset_psw_model),
-                    clear_fields(new_password_field, confirm_password_field),
+                    clear_fields(new_password_field,
+                                 confirm_password_field,
+                                 username_field_forgot, email_field_forgot),
                     page.update(),
                 ),
             ),
