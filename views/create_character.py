@@ -138,28 +138,43 @@ def create_character_view(page: ft.Page, character_id=None):
 
     instructions_dialog = ft.AlertDialog(
         modal=True,
-        title=ft.Text("Instruções de preenchimento"),
-        content=ft.Column(
-            controls=[
-                ft.Text("Complete os campos corretamente.",
-                        size=20, weight=ft.FontWeight.W_700),
-                ft.Text("Crie o nome de personagem unico"),
-                ft.Text("Selecione a classe do seu personagem."),
-                ft.Text("Os atributos devem estar entre 8 e 20."),
-                ft.Text("Força: Força fisica e combate."),
-                ft.Text("Constituição: Resistência a dano e Resiliencia."),
-                ft.Text("Destreza: Agilidade e precisão."),
-                ft.Text("Inteligência: Capacidade de aprendizado."),
-                ft.Text("Sabedoria: Percepção e intuição."),
-                ft.Text("Carisma: Persuasão e liderança."),
-                ft.Text("Selecione a raça, cor do cabelo e cor da pele."),
-                ft.Text("Clique em 'Criar Novo Personagem' para salvar."),
-            ],
+        title=ft.Text("Instruções de preenchimento",
+                      size=22, weight=ft.FontWeight.W_700),
+        content=ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.Text(
+                        "Complete os campos corretamente.",
+                        size=18,
+                        weight=ft.FontWeight.W_600,
+                    ),
+                    ft.Text("Crie o nome de personagem único."),
+                    ft.Text("Selecione a classe do seu personagem."),
+                    ft.Text("Os atributos devem estar entre 8 e 20."),
+                    ft.Text("Força: Força física e combate."),
+                    ft.Text("Constituição: Resistência a dano e resiliência."),
+                    ft.Text("Destreza: Agilidade e precisão."),
+                    ft.Text("Inteligência: Capacidade de aprendizado."),
+                    ft.Text("Sabedoria: Percepção e intuição."),
+                    ft.Text("Carisma: Persuasão e liderança."),
+                    ft.Text("Selecione a raça, cor do cabelo e cor da pele."),
+                    ft.Text("Clique em 'Criar Novo Personagem' para salvar."),
+                ],
+                alignment=ft.MainAxisAlignment.START,
+                horizontal_alignment=ft.CrossAxisAlignment.START,
+                spacing=8,
+            ),
+            width=500,
+            height=400,
+            padding=10,
+            border_radius=8,
         ),
         actions=[
-            ft.TextButton("Fechar", on_click=lambda e: (
-                setattr(instructions_dialog, "open", False), page.update()))
-        ]
+            ft.TextButton(
+                "Fechar",
+                on_click=lambda _: page.close(instructions_dialog),
+            ),
+        ],
     )
 
     # Botões de navegação para trocar a imagem da classe

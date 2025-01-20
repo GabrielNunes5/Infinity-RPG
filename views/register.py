@@ -128,21 +128,32 @@ def register_view(page: ft.Page):
     instructions_dialog = ft.AlertDialog(
         modal=True,
         title=ft.Text("Instruções de preenchimento"),
-        content=ft.Column(
-            controls=[
-                ft.Text("Nome e Sobrenome: Deve conter nome completo."),
-                ft.Text("Usuário: Escolha um nome único."),
-                ft.Text(
-                    "Email: Deve ser um email valido: exemplo@dominio.com"),
-                ft.Text(
-                    "Senha: Deve conter ao menos 8 caracteres, incluindo "
-                    "1 letra maiúscula, 1 caractere especial e 1 número."),
-            ]
+        content=ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.Text("Nome e Sobrenome: Deve conter nome completo."),
+                    ft.Text("Usuário: Escolha um nome único."),
+                    ft.Text(
+                        "Email: Deve ser valido: exemplo@dominio.com"),
+                    ft.Text(
+                        "Senha: Deve conter ao menos 8 caracteres, incluindo "
+                        "1 letra maiúscula, 1 caractere especial e 1 número."
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.START,
+                horizontal_alignment=ft.CrossAxisAlignment.START,
+                spacing=10,
+            ),
+            width=400,
+            height=200,
+            padding=10,
         ),
         actions=[
-            ft.TextButton("Fechar", on_click=lambda e: (
-                setattr(instructions_dialog, "open", False), page.update()))
-        ]
+            ft.TextButton(
+                "Fechar",
+                on_click=lambda _: page.close(instructions_dialog),
+            ),
+        ],
     )
 
     # Estrutura da página

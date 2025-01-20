@@ -8,11 +8,15 @@ user_session = {"user_id": None}
 
 
 def login_view(page: ft.Page):
+    def clear_fields(*fields):
+        """Função auxiliar para limpar campos."""
+        for field in fields:
+            field.value = ""
+
     def authenticate_user(e):
         username = username_field.value
         password = password_field.value
 
-        # Use o controller para autenticação
         result = LoginController.authenticate_user(username, password)
 
         if result["status"]:
@@ -28,29 +32,24 @@ def login_view(page: ft.Page):
         username = username_field_forgot.value
         email = email_field_forgot.value
 
-        # Verifica no banco de dados
         result = LoginController.verify_user_and_email(username, email)
 
         if result["status"]:
-            # Abre o modal para redefinir a senha
             forgot_psw_model.open = False
             reset_psw_model.open = True
         else:
-            # Exibe um alerta caso não encontrado
             alert = ft.AlertDialog(
                 title=ft.Text("Erro"),
                 content=ft.Text("Usuário ou e-mail não cadastrado."),
                 actions=[
                     ft.TextButton(
-                        "Fechar",
-                        on_click=lambda _: page.close(alert))
+                        "Fechar", on_click=lambda _: page.close(alert))
                 ],
             )
             page.dialog = alert
             alert.open = True
-            # Limpa os campos no modal
-            username_field_forgot.value = ""
-            email_field_forgot.value = ""
+
+        clear_fields(username_field_forgot, email_field_forgot)
         page.update()
 
     def reset_password(e):
@@ -58,9 +57,7 @@ def login_view(page: ft.Page):
         new_password = new_password_field.value
         confirm_password = confirm_password_field.value
 
-        # Valida se as senhas coincidem
         if new_password != confirm_password:
-            # Exibe um alerta se as senhas não coincidem
             alert = ft.AlertDialog(
                 title=ft.Text("Erro"),
                 content=ft.Text("As senhas não coincidem. Tente novamente."),
@@ -69,20 +66,13 @@ def login_view(page: ft.Page):
                         "Fechar", on_click=lambda _: page.close(alert))
                 ],
             )
-            # Limpa os campos no modal
-            username_field_forgot.value = ""
-            email_field_forgot.value = ""
             page.dialog = alert
             alert.open = True
         else:
-            # Valida as regras da senha
             errors = UserController.validate_password(password=new_password)
-
-            # Filtra erros apenas relacionados à senha
             password_errors = [error for error in errors if "Senha" in error]
 
             if password_errors:
-                # Exibe um alerta caso a senha não atenda os critérios
                 alert = ft.AlertDialog(
                     title=ft.Text("Erro"),
                     content=ft.Text("\n".join(password_errors)),
@@ -91,13 +81,9 @@ def login_view(page: ft.Page):
                             "Fechar", on_click=lambda _: page.close(alert))
                     ],
                 )
-                # Limpa os campos no modal
-                username_field_forgot.value = ""
-                email_field_forgot.value = ""
                 page.dialog = alert
                 alert.open = True
             else:
-                # Atualiza a senha no banco de dados
                 result = LoginController.update_password(
                     username, new_password)
 
@@ -107,8 +93,6 @@ def login_view(page: ft.Page):
                     page.overlay.append(snack_bar)
                     snack_bar.open = True
                     reset_psw_model.open = False
-                    new_password_field.value = ""
-                    confirm_password_field.value = ""
                 else:
                     alert = ft.AlertDialog(
                         title=ft.Text("Erro"),
@@ -119,14 +103,10 @@ def login_view(page: ft.Page):
                                 "Fechar", on_click=lambda _: page.close(alert))
                         ],
                     )
-                    new_password_field.value = ""
-                    confirm_password_field.value = ""
                     page.dialog = alert
                     alert.open = True
 
-        # Limpa os campos no modal
-        new_password_field.value = ""
-        confirm_password_field.value = ""
+        clear_fields(new_password_field, confirm_password_field)
         page.update()
 
     def show_forgot_psw_modal(e):
@@ -135,57 +115,58 @@ def login_view(page: ft.Page):
 
     # Campos da interface
     username_field = ft.TextField(
-        **input_configs,
-        label="Usuário",
-        icon=ft.Icons.PERSON_ROUNDED)
+        **input_configs, label="Usuário", icon=ft.Icons.PERSON_ROUNDED
+    )
     password_field = ft.TextField(
         **input_configs,
         label="Senha",
         password=True,
         icon=ft.Icons.LOCK_OUTLINE,
-        can_reveal_password=True)
+        can_reveal_password=True,
+    )
     login_button = ft.ElevatedButton(
-        **btn_configs,
-        text="Entrar",
-        on_click=authenticate_user)
+        **btn_configs, text="Entrar", on_click=authenticate_user
+    )
     register_redirect_text = ft.TextButton(
         "Não possui conta? Cadastre-se agora",
-        on_click=lambda _: page.go("/register"))
+        on_click=lambda _: page.go("/register")
+    )
     forgot_password_text = ft.TextButton(
-        "Esqueci a conta",
-        on_click=show_forgot_psw_modal)
+        "Esqueci a conta", on_click=show_forgot_psw_modal
+    )
 
     # Modal de "Esqueci a senha"
     username_field_forgot = ft.TextField(
-        **input_configs,
-        label="Usuário",
-        icon=ft.Icons.PERSON_OUTLINE)
+        **input_configs, label="Usuário", icon=ft.Icons.PERSON_OUTLINE
+    )
     email_field_forgot = ft.TextField(
-        **input_configs,
-        label="E-mail",
-        icon=ft.Icons.ALTERNATE_EMAIL)
+        **input_configs, label="E-mail", icon=ft.Icons.ALTERNATE_EMAIL
+    )
     forgot_psw_model = ft.AlertDialog(
         modal=True,
         title=ft.Text("Recuperar Senha"),
-        content=ft.Column(
-            controls=[
-                username_field_forgot,
-                email_field_forgot,
-            ]
+        content=ft.Container(
+            content=ft.Column(
+                controls=[username_field_forgot, email_field_forgot],
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                spacing=10,
+            ),
+            width=300,
+            height=100,
+            padding=5,
         ),
         actions=[
             ft.TextButton(
                 "Fechar",
                 on_click=lambda _: (
                     page.close(forgot_psw_model),
-                    setattr(username_field_forgot, 'value', ""),
-                    setattr(email_field_forgot, 'value', "")
-                )
+                    clear_fields(username_field_forgot, email_field_forgot),
+                    page.update(),
+                ),
             ),
-            ft.TextButton(
-                "Verificar",
-                on_click=verify_user_and_email),
-        ]
+            ft.TextButton("Verificar", on_click=verify_user_and_email),
+        ],
     )
 
     # Modal para redefinir senha
@@ -194,34 +175,40 @@ def login_view(page: ft.Page):
         label="Nova Senha",
         password=True,
         can_reveal_password=True,
-        icon=ft.Icons.LOCK_OUTLINE)
+        icon=ft.Icons.LOCK_OUTLINE,
+    )
     confirm_password_field = ft.TextField(
         **input_configs,
         label="Confirmar Nova Senha",
         password=True,
         can_reveal_password=True,
-        icon=ft.Icons.LOCK_OUTLINE)
+        icon=ft.Icons.LOCK_OUTLINE,
+    )
     reset_psw_model = ft.AlertDialog(
         modal=True,
         title=ft.Text("Redefinir Senha"),
-        content=ft.Column(
-            controls=[
-                new_password_field,
-                confirm_password_field,
-            ]
+        content=ft.Container(
+            content=ft.Column(
+                controls=[new_password_field, confirm_password_field],
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                spacing=10,
+            ),
+            width=300,
+            height=100,
+            padding=5,
         ),
         actions=[
             ft.TextButton(
                 "Fechar",
                 on_click=lambda _: (
                     page.close(reset_psw_model),
-                    setattr(username_field_forgot, 'value', ""),
-                    setattr(email_field_forgot, 'value', "")
-                )),
-            ft.TextButton(
-                "Redefinir",
-                on_click=reset_password),
-        ]
+                    clear_fields(new_password_field, confirm_password_field),
+                    page.update(),
+                ),
+            ),
+            ft.TextButton("Redefinir", on_click=reset_password),
+        ],
     )
 
     # Estrutura da página
@@ -238,27 +225,24 @@ def login_view(page: ft.Page):
                         padding=20,
                         content=ft.Column(
                             controls=[
-                                ft.Text(value='INFINITY RPG - LOGIN',
-                                        size=30,
-                                        weight="bold",
-                                        color="#ffffff",
-                                        ),
-                                ft.Image(
-                                    src='images/d20.png',
-                                    width=80,
-                                    color='#ffffff'
-                                ),
-                                ft.Text(value='Entre e divirta-se',
+                                ft.Text(
+                                    value="INFINITY RPG - LOGIN",
+                                    size=30,
+                                    weight="bold",
+                                    color="#ffffff"),
+                                ft.Image(src="images/d20.png",
+                                         width=80,
+                                         color="#ffffff"),
+                                ft.Text(value="Entre e divirta-se",
                                         size=20,
-                                        color='#ffffff',
-                                        ),
+                                        color="#ffffff"),
                                 username_field,
                                 password_field,
                                 login_button,
                                 register_redirect_text,
                                 forgot_password_text,
                                 forgot_psw_model,
-                                reset_psw_model
+                                reset_psw_model,
                             ],
                             alignment=ft.MainAxisAlignment.CENTER,
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
