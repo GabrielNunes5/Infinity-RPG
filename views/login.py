@@ -13,6 +13,7 @@ def login_view(page: ft.Page):
         for field in fields:
             field.value = ""
 
+    # Função para autenticar o usuário
     def authenticate_user(e):
         username = username_field.value
         password = password_field.value
@@ -28,6 +29,7 @@ def login_view(page: ft.Page):
             snack_bar.open = True
             page.update()
 
+    # Função para verificar usuário e e-mail
     def verify_user_and_email(e):
         username = username_field_forgot.value
         email = email_field_forgot.value
@@ -53,6 +55,7 @@ def login_view(page: ft.Page):
             alert.open = True
         page.update()
 
+    # Função para redefinir a senha
     def reset_password(e):
         username = username_field_forgot.value
         new_password = new_password_field.value
