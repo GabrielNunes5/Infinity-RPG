@@ -117,4 +117,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 ---
 
 ## **Autor**
-Desenvolvido por Gabriel Nunes. Para mais informações, visite meu [LinkedIn](https://www.linkedin.com/in/seulinkedin/) ou entre em contato por [email](mailto:seuemail@example.com).
+Desenvolvido por Gabriel Nunes. Para mais informações, visite meu [LinkedIn](www.linkedin.com/in/gabriel-nunes-085gn)
